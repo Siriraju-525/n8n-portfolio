@@ -1,6 +1,6 @@
-# ⚡ n8n Automation Portfolio
+# ⚡ n8n Automation Projects
 
-Welcome to my **n8n project portfolio** 🎉 
+Welcome to my **n8n projects ** 🎉 
 This repository showcases real-world automation workflows I built using **n8n** for job search, email communication, and workflow optimization.  
 
 These projects demonstrate my ability to **design, implement, and scale automations** with data handling, email integration, and error management.
