@@ -1,0 +1,252 @@
+{
+  "name": "n8n email automation",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -48
+      ],
+      "id": "2ebbacd8-2544-4837-b008-14a8acabccd3",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1AobpxB-6wMv4EfJ7UBjUya8gRQGugH8rv8baLYqXJ3g",
+          "mode": "list",
+          "cachedResultName": "1800 HR Contacts by all jobs notify",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1AobpxB-6wMv4EfJ7UBjUya8gRQGugH8rv8baLYqXJ3g/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1338106940,
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1AobpxB-6wMv4EfJ7UBjUya8gRQGugH8rv8baLYqXJ3g/edit#gid=1338106940"
+        },
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "specifyRangeA1",
+              "range": "A2:E1847"
+            }
+          },
+          "returnFirstMatch": false
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        -48
+      ],
+      "id": "ba64c9f8-488a-49fd-973a-b85bfa81648a",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YLCsb8m2GZq3lhQq",
+          "name": "Google Sheets account 5"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "batchSize": 30,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        672,
+        -48
+      ],
+      "id": "9bce12ae-dd9e-4184-85e4-46d05c9488f8",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "Replace Me",
+      "typeVersion": 1,
+      "position": [
+        896,
+        -48
+      ],
+      "id": "b84ff8ac-22ad-4337-95a7-b86311815c0a"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.to }}",
+        "subject": "={{ $json.subject }}",
+        "message": "={{$json[\"body\"]}}",
+        "options": {
+          "senderName": "Siri .Darsinala",
+          "replyTo": "siriraju.darsinala001@gmail.com"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1120,
+        -48
+      ],
+      "id": "a52d44c7-8676-4040-99d3-d0fa21111022",
+      "name": "Send a message",
+      "webhookId": "93e8bec7-7e05-4e03-867a-9b80b69dad2f",
+      "executeOnce": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "IHwMx4V4SWrHObuK",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items\n  .map(item => {\n    const values = Object.values(item.json);\n\n    const name = String(values[2] || \"there\").trim();      \n    const email = String(values[3] || \"\").trim();          \n    const company = String(values[5] || \"your company\").trim(); \n\n    // Skip item if email is missing or invalid\n    if (!email || !email.includes(\"@\")) return null;\n\n    return {\n      json: {\n        to: email,\n        subject: `Hi ${name}, Let's Connect on IT Opportunities!`,\n        body: `\nHi ${name},<br><br>\nI'm <b>Siri Raju</b>, a B.Tech CSE 2025 graduate with a passion for solving real-world problems. 🚀<br><br>\nI’m exploring exciting IT opportunities in Software Development, Data Analysis, AI/ML, and Automation, and I’d love to contribute to <b>${company}</b> with my skills and creativity.<br><br>\n\n📌 <b>Here’s what I bring to the table:</b>\n<ul>\n  <li>💻 Automation & workflow building with <b>n8n</b> and Python</li>\n  <li>🤖 AI & ML applications with real project experience</li>\n  <li>🐾 Multi-animal Recognition project (check it on GitHub!)</li>\n  <li>🌐 Portfolio: <a href=\"https://siri-portfolio-dusky.vercel.app/\" target=\"_blank\">View Portfolio</a></li>\n</ul>\n\n✨ Click below to unlock my full resume & portfolio:<br>\n<a href=\"https://drive.google.com/uc?export=download&id=1IHm8djbqoSBCYFBKbW3XbPGSFccuZ5WI\" \n   style=\"display:inline-block; padding:12px 20px; background:#1a73e8; color:white;\n          text-decoration:none; border-radius:6px; font-weight:bold;\" target=\"_blank\">\n📄 Download Resume\n</a>\n&nbsp;&nbsp;\n<a href=\"https://siri-portfolio-dusky.vercel.app/\" \n   style=\"display:inline-block; padding:12px 20px; background:#34a853; color:white;\n          text-decoration:none; border-radius:6px; font-weight:bold;\" target=\"_blank\">\n🌐 View Portfolio\n</a><br><br>\n\n💡 Sent by my custom-built <b>n8n Agent</b> – showcasing automation, creativity, and technical skills.<br><br>\n\nBest regards,<br>\n<b>Siri Raju</b>\n        `\n      }\n    };\n  })\n  // Filter out null items\n  .filter(item => item !== null);\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        -48
+      ],
+      "id": "5944cf0a-f32d-4d08-902a-fdf87e4274d2",
+      "name": "Code in JavaScript",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "686df673-3267-4888-aef4-0a8bb1d4ee43",
+              "leftValue": "={{ $json[\"labelIds\"][0] }}",
+              "rightValue": "SENT",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1376,
+        -32
+      ],
+      "id": "afa9c0ac-bab6-446a-945e-ed056821fbba",
+      "name": "If"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [],
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "i5JsZgtLl1Lokb2d"
+  },
+  "versionId": "e1362c58-3922-47ed-ad6f-a612bff9be11",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f872d9ee2b3508a8f8a6343e066bfdbed3fe76dfc84a436a10b0443fee8b08f3"
+  },
+  "id": "i5JsZgtLl1Lokb2d",
+  "tags": []
+}
