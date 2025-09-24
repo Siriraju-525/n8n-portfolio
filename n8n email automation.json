@@ -2,15 +2,19 @@
   "name": "n8n email automation",
   "nodes": [
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
+      "parameters": {
+        "mode": "time",
+        "cronExpression": "0 10 * * *",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.cron",
       "typeVersion": 1,
       "position": [
         0,
         -48
       ],
       "id": "2ebbacd8-2544-4837-b008-14a8acabccd3",
-      "name": "When clicking ‘Execute workflow’"
+      "name": "Scheduled Trigger"
     },
     {
       "parameters": {
@@ -19,14 +23,14 @@
           "value": "1AobpxB-6wMv4EfJ7UBjUya8gRQGugH8rv8baLYqXJ3g",
           "mode": "list",
           "cachedResultName": "1800 HR Contacts by all jobs notify",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1AobpxB-6wMv4EfJ7UBjUya8gRQGugH8rv8baLYqXJ3g/edit?usp=drivesdk"
+          "cachedResultUrl": "YOUR_GOOGLE_SHEET_URL"
         },
         "sheetName": {
           "__rl": true,
           "value": 1338106940,
           "mode": "list",
           "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1AobpxB-6wMv4EfJ7UBjUya8gRQGugH8rv8baLYqXJ3g/edit#gid=1338106940"
+          "cachedResultUrl": "YOUR_GOOGLE_SHEET_URL"
         },
         "options": {
           "dataLocationOnSheet": {
@@ -48,7 +52,7 @@
       "name": "Get row(s) in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "YLCsb8m2GZq3lhQq",
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
           "name": "Google Sheets account 5"
         }
       }
@@ -100,14 +104,14 @@
       "executeOnce": true,
       "credentials": {
         "gmailOAuth2": {
-          "id": "IHwMx4V4SWrHObuK",
+          "id": "YOUR_GMAIL_CREDENTIAL_ID",
           "name": "Gmail account"
         }
       }
     },
     {
       "parameters": {
-        "jsCode": "return items\n  .map(item => {\n    const values = Object.values(item.json);\n\n    const name = String(values[2] || \"there\").trim();      \n    const email = String(values[3] || \"\").trim();          \n    const company = String(values[5] || \"your company\").trim(); \n\n    // Skip item if email is missing or invalid\n    if (!email || !email.includes(\"@\")) return null;\n\n    return {\n      json: {\n        to: email,\n        subject: `Hi ${name}, Let's Connect on IT Opportunities!`,\n        body: `\nHi ${name},<br><br>\nI'm <b>Siri Raju</b>, a B.Tech CSE 2025 graduate with a passion for solving real-world problems. 🚀<br><br>\nI’m exploring exciting IT opportunities in Software Development, Data Analysis, AI/ML, and Automation, and I’d love to contribute to <b>${company}</b> with my skills and creativity.<br><br>\n\n📌 <b>Here’s what I bring to the table:</b>\n<ul>\n  <li>💻 Automation & workflow building with <b>n8n</b> and Python</li>\n  <li>🤖 AI & ML applications with real project experience</li>\n  <li>🐾 Multi-animal Recognition project (check it on GitHub!)</li>\n  <li>🌐 Portfolio: <a href=\"https://siri-portfolio-dusky.vercel.app/\" target=\"_blank\">View Portfolio</a></li>\n</ul>\n\n✨ Click below to unlock my full resume & portfolio:<br>\n<a href=\"https://drive.google.com/uc?export=download&id=1IHm8djbqoSBCYFBKbW3XbPGSFccuZ5WI\" \n   style=\"display:inline-block; padding:12px 20px; background:#1a73e8; color:white;\n          text-decoration:none; border-radius:6px; font-weight:bold;\" target=\"_blank\">\n📄 Download Resume\n</a>\n&nbsp;&nbsp;\n<a href=\"https://siri-portfolio-dusky.vercel.app/\" \n   style=\"display:inline-block; padding:12px 20px; background:#34a853; color:white;\n          text-decoration:none; border-radius:6px; font-weight:bold;\" target=\"_blank\">\n🌐 View Portfolio\n</a><br><br>\n\n💡 Sent by my custom-built <b>n8n Agent</b> – showcasing automation, creativity, and technical skills.<br><br>\n\nBest regards,<br>\n<b>Siri Raju</b>\n        `\n      }\n    };\n  })\n  // Filter out null items\n  .filter(item => item !== null);\n"
+        "jsCode": "return items\n  .map(item => {\n    const values = Object.values(item.json);\n\n    const name = String(values[2] || \"there\").trim();      \n    const email = String(values[3] || \"\").trim();          \n    const company = String(values[5] || \"your company\").trim(); \n\n    if (!email || !email.includes(\"@\")) return null;\n\n    return {\n      json: {\n        to: email,\n        subject: `Hi ${name}, Let's Connect on IT Opportunities!`,\n        body: `\nHi ${name},<br><br>\nI'm <b>Siri Raju</b>, a B.Tech CSE 2025 graduate with a passion for solving real-world problems. 🚀<br><br>\nI’m exploring exciting IT opportunities in Software Development, Data Analysis, AI/ML, and Automation, and I’d love to contribute to <b>${company}</b> with my skills and creativity.<br><br>\n\n📌 <b>Here’s what I bring to the table:</b>\n<ul>\n  <li>💻 Automation & workflow building with <b>n8n</b> and Python</li>\n  <li>🤖 AI & ML applications with real project experience</li>\n  <li>🐾 Multi-animal Recognition project (check it on GitHub!)</li>\n  <li>🌐 Portfolio: <a href=\"https://siri-portfolio-dusky.vercel.app/\" target=\"_blank\">View Portfolio</a></li>\n</ul>\n\n✨ Click below to unlock my full resume & portfolio:<br>\n<a href=\"https://drive.google.com/uc?export=download&id=1IHm8djbqoSBCYFBKbW3XbPGSFccuZ5WI\" \n   style=\"display:inline-block; padding:12px 20px; background:#1a73e8; color:white;\n          text-decoration:none; border-radius:6px; font-weight:bold;\" target=\"_blank\">\n📄 Download Resume\n</a>\n&nbsp;&nbsp;\n<a href=\"https://siri-portfolio-dusky.vercel.app/\" \n   style=\"display:inline-block; padding:12px 20px; background:#34a853; color:white;\n          text-decoration:none; border-radius:6px; font-weight:bold;\" target=\"_blank\">\n🌐 View Portfolio\n</a><br><br>\n\n💡 Sent by my custom-built <b>n8n Agent</b> – showcasing automation, creativity, and technical skills.<br><br>\n\nBest regards,<br>\n<b>Siri Raju</b>\n        `\n      }\n    };\n  })\n  .filter(item => item !== null);\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -156,7 +160,7 @@
   ],
   "pinData": {},
   "connections": {
-    "When clicking ‘Execute workflow’": {
+    "Scheduled Trigger": {
       "main": [
         [
           {
